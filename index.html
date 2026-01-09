@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Root | An</title>
+    <title>System Root | Jingmin An</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -11,9 +11,9 @@
             --bg-color: #050a0e;
             --term-bg: rgba(13, 17, 23, 0.85);
             --text-main: #c9d1d9;
-            --accent: #00f0ff; /* 赛博青 */
-            --accent-sec: #00ff41; /* 黑客绿 */
-            --gold: #ffd700;   /* 奖项金 */
+            --accent: #00f0ff; /* 赛博青 - 强调色 */
+            --accent-sec: #00ff41; /* 黑客绿 - 成功/日期 */
+            --gold: #ffd700;   /* 金色 - 奖项 */
             --dim: #484f58;
             --font-stack: 'Fira Code', monospace;
         }
@@ -25,13 +25,14 @@
             margin: 0;
             overflow-x: hidden;
             min-height: 100vh;
+            /* 背景网格线 */
             background-image: 
                 linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* === 开机动画 === */
+        /* === 1. 开机自检动画 (Boot Sequence) === */
         #boot-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 9999; padding: 20px;
@@ -39,7 +40,7 @@
             display: flex; flex-direction: column; justify-content: flex-end;
         }
 
-        /* === CRT 扫描线 === */
+        /* === 2. CRT 屏幕扫描线特效 === */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
@@ -48,13 +49,13 @@
 
         /* === 主容器 === */
         .container {
-            max-width: 900px; margin: 5vh auto; position: relative; z-index: 10;
+            max-width: 960px; margin: 5vh auto; position: relative; z-index: 10;
             opacity: 0; animation: fadeIn 1s ease 2.2s forwards;
-            padding-bottom: 50px;
+            padding-bottom: 60px; padding-left: 20px; padding-right: 20px;
         }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* 终端窗口 */
+        /* 终端窗口样式 */
         .terminal-window {
             background: var(--term-bg);
             border: 1px solid var(--dim);
@@ -76,79 +77,95 @@
 
         /* === 头部区域 (Avatar + Intro) === */
         .header-section {
-            display: flex; gap: 30px; align-items: flex-start; margin-bottom: 40px;
+            display: flex; gap: 40px; align-items: flex-start; margin-bottom: 50px;
         }
         
-        .avatar-container {
-            flex-shrink: 0;
-            position: relative;
-        }
-        
-        /* 这里的图片样式 */
+        .avatar-container { flex-shrink: 0; }
         .avatar-img {
-            width: 140px; height: 140px;
+            width: 150px; height: 150px;
             object-fit: cover;
-            border-radius: 4px; /* 稍微圆角，保持硬朗 */
+            border-radius: 4px; 
             border: 2px solid var(--accent);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); /* 发光效果 */
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
             filter: contrast(1.1) brightness(1.1);
         }
 
-        /* 动态打字 */
+        /* 动态打字效果 */
         .typing-effect {
             border-right: 2px solid var(--accent);
             white-space: nowrap; overflow: hidden;
             animation: blink 0.75s step-end infinite;
-            display: inline-block; font-size: 2rem; font-weight: bold; color: #fff;
-            margin-bottom: 10px;
+            display: inline-block; font-size: 1.8rem; font-weight: bold; color: #fff;
+            margin-bottom: 15px;
         }
         @keyframes blink { 50% { border-color: transparent; } }
 
         .prompt { color: var(--accent-sec); margin-right: 10px; }
         .cmd { color: var(--accent); }
-        .comment { color: #8b949e; font-style: italic; font-size: 0.9rem; }
+        
+        /* 链接通用样式 */
+        a { color: inherit; text-decoration: none; transition: 0.2s; }
+        a.link-highlight { border-bottom: 1px solid var(--accent); color: var(--accent); }
+        a.link-highlight:hover { background: var(--accent); color: #000; }
+        
+        .bio-text { color: #8b949e; line-height: 1.8; font-size: 0.95rem; }
+        .bio-text strong { color: #fff; }
 
-        /* 章节通用 */
-        section { margin-bottom: 50px; }
+        /* 章节标题 */
+        section { margin-bottom: 60px; }
         h2 { 
             font-size: 1.2rem; border-bottom: 1px dashed var(--dim); 
-            padding-bottom: 10px; color: var(--accent); margin-bottom: 20px;
+            padding-bottom: 10px; color: var(--accent); margin-bottom: 25px;
         }
 
         /* === NEWS 列表 === */
-        .news-list { list-style: none; padding: 0; font-family: var(--font-stack); }
+        .news-list { list-style: none; padding: 0; }
         .news-item {
-            margin-bottom: 12px; display: flex; align-items: baseline;
+            margin-bottom: 12px; display: flex; 
         }
         .news-date {
-            color: var(--accent-sec); min-width: 110px; font-weight: bold;
+            color: var(--accent-sec); min-width: 130px; font-weight: bold; font-size: 0.9rem;
         }
-        .news-text { color: var(--text-main); }
-
-        /* === AWARDS (成就系统) === */
-        .award-item {
-            border: 1px solid var(--dim);
-            background: rgba(255, 215, 0, 0.05);
-            padding: 15px; margin-bottom: 10px; border-radius: 4px;
-            display: flex; justify-content: space-between; align-items: center;
-            transition: all 0.2s;
-        }
-        .award-item:hover { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-        .award-title { font-weight: bold; color: #fff; }
-        .award-icon { color: var(--gold); margin-right: 10px; }
+        .news-text { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
 
         /* === 论文列表 === */
         .paper-item {
-            border-left: 2px solid var(--dim); padding-left: 15px; margin-bottom: 25px;
+            border-left: 2px solid var(--dim); padding-left: 20px; margin-bottom: 30px;
             transition: all 0.3s;
         }
         .paper-item:hover { border-left-color: var(--accent); background: rgba(255,255,255,0.02); }
-        .paper-title { font-size: 1.1rem; color: #fff; display: block; margin-bottom: 5px; text-decoration: none;}
+        
+        .paper-venue { 
+            color: #8b949e; font-style: italic; font-size: 0.85rem; margin-bottom: 5px; 
+            display: block; font-family: sans-serif; /* 区分正文， venue用无衬线看着舒服一点点，或者保持monospace */
+            font-family: var(--font-stack);
+        }
+        .paper-title { 
+            font-size: 1.1rem; color: #fff; font-weight: 600; line-height: 1.4; display: block; margin-bottom: 8px; 
+        }
         .paper-title:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+        .paper-authors { font-size: 0.9rem; color: #a5d6ff; line-height: 1.5; margin-bottom: 10px; }
         .tags span { 
             font-size: 12px; background: rgba(0, 240, 255, 0.1); 
-            color: var(--accent); padding: 2px 6px; border-radius: 4px; margin-right: 5px; 
+            color: var(--accent); padding: 3px 8px; border-radius: 4px; margin-right: 8px; 
         }
+
+        /* === AWARDS 列表 === */
+        .award-grid { display: grid; gap: 10px; }
+        .award-item {
+            border: 1px solid var(--dim);
+            background: rgba(255, 215, 0, 0.03);
+            padding: 12px 15px; border-radius: 4px;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s;
+        }
+        .award-item:hover { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.15); transform: translateX(5px); }
+        .award-left { display: flex; align-items: center; gap: 15px; }
+        .award-year { 
+            background: var(--gold); color: #000; padding: 2px 6px; 
+            font-size: 0.8rem; font-weight: bold; border-radius: 2px; 
+        }
+        .award-title { color: #fff; font-size: 0.95rem; }
 
         /* 底部状态栏 */
         .status-bar {
@@ -157,14 +174,13 @@
             padding: 5px 20px; font-size: 12px; color: #8b949e;
             display: flex; justify-content: space-between; z-index: 100;
         }
-        
-        a { color: inherit; text-decoration: none; }
 
-        /* 响应式适配 */
+        /* 响应式 */
         @media (max-width: 768px) {
             .header-section { flex-direction: column-reverse; align-items: center; text-align: center; }
-            .typing-effect { font-size: 1.5rem; white-space: normal; animation: none; border: none; }
+            .typing-effect { font-size: 1.4rem; white-space: normal; animation: none; border: none; }
             .news-item { flex-direction: column; }
+            .award-item { flex-direction: column; align-items: flex-start; gap: 5px; }
         }
     </style>
 </head>
@@ -172,12 +188,12 @@
 
     <div id="boot-screen">
         <div>[ OK ] Verifying user identity: root@an...</div>
-        <div>[ OK ] Loading module: News...</div>
-        <div>[ OK ] Loading module: Publications...</div>
-        <div>[ OK ] Loading module: Honors & Awards...</div>
+        <div>[ OK ] Connecting to Peking University Server...</div>
+        <div>[ OK ] Loading Lab on a Chip Module...</div>
+        <div>[ OK ] Loading NeurIPS 2025 Module...</div>
         <div>[ OK ] System integrity verified.</div>
         <br>
-        <div>> Access Granted.</div>
+        <div>> Access Granted. Welcome, Jingmin.</div>
     </div>
 
     <div class="scanlines"></div>
@@ -187,7 +203,7 @@
             
             <div class="window-bar">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-                <div class="window-title">root@an: ~/profile_v2.0</div>
+                <div class="window-title">root@an: ~/profile_v2.1</div>
             </div>
 
             <div class="content">
@@ -199,23 +215,25 @@
                             <span class="cmd">./whoami</span>
                         </div>
                         <br>
-                        <div class="typing-effect" style="width: 0; animation: typing 2s steps(20, end) forwards 2.5s, blink 0.75s step-end infinite;">
-                            Hello, I'm An.
+                        <div class="typing-effect" style="width: 0; animation: typing 2s steps(22, end) forwards 2.5s, blink 0.75s step-end infinite;">
+                            Hello, I'm Jingmin An.
                         </div>
-                        <p style="color: #8b949e; line-height: 1.8;">
-                            > Ph.D. Candidate at University of Science.<br>
-                            > Research Interests: <strong>AI Security</strong> & <strong>Systems</strong>.<br>
-                            > "Code is poetry, binaries are truth."
-                        </p>
-                        <div style="margin-top: 20px;">
-                            <a href="mailto:your@email.com" style="border-bottom: 1px solid var(--accent); margin-right: 15px;">[Email]</a>
-                            <a href="#" style="border-bottom: 1px solid var(--accent); margin-right: 15px;">[Github]</a>
-                            <a href="#" style="border-bottom: 1px solid var(--accent);">[Scholar]</a>
+                        <div class="bio-text">
+                            <p>
+                                > Ph.D. Candidate at <strong>Peking University (PKU)</strong>.<br>
+                                > Advisor: <a href="https://www.psy.pku.edu.cn/english/people/faculty/professor/fangfang/index.htm" target="_blank" class="link-highlight">Prof. Fang Fang</a>.<br>
+                                > Research Interests: <span style="color: #fff;">Computational Psychology (Brain Science)</span>, <span style="color: #fff;">NLP</span> & <span style="color: #fff;">Model Interpretability</span>.
+                            </p>
+                        </div>
+                        <div style="margin-top: 25px;">
+                            <a href="mailto:your_email@pku.edu.cn" class="link-highlight" style="margin-right: 20px;">[Email]</a>
+                            <a href="#" class="link-highlight" style="margin-right: 20px;">[Github]</a>
+                            <a href="#" class="link-highlight">[Google Scholar]</a>
                         </div>
                     </div>
 
                     <div class="avatar-container">
-                        <img src="https://via.placeholder.com/150" alt="An's Avatar" class="avatar-img">
+                        <img src="https://via.placeholder.com/150" alt="Jingmin An" class="avatar-img">
                     </div>
                 </section>
 
@@ -223,16 +241,16 @@
                     <h2><span class="prompt">$</span>cat /var/log/system_updates</h2>
                     <ul class="news-list">
                         <li class="news-item">
-                            <span class="news-date">[2026-02-15]</span>
-                            <span class="news-text">Paper "The Future of AI" accepted to <strong>CVPR 2026</strong> (Oral).</span>
+                            <span class="news-date">[2025-11-14]</span>
+                            <span class="news-text">Attended the <strong>Society for Neuroscience (SfN)</strong> annual meeting.</span>
                         </li>
                         <li class="news-item">
-                            <span class="news-date">[2025-11-20]</span>
-                            <span class="news-text">Attended NeurIPS in San Diego.</span>
+                            <span class="news-date">[2025-09-20]</span>
+                            <span class="news-text">Paper <span style="color: var(--accent);">HFTP</span> accepted to <strong>NeurIPS 2025</strong>!</span>
                         </li>
                         <li class="news-item">
-                            <span class="news-date">[2025-06-01]</span>
-                            <span class="news-text">Started Research Internship at Microsoft.</span>
+                            <span class="news-date">[2024-11-05]</span>
+                            <span class="news-text">Awarded <strong>PKU Second-Class Scholarship</strong> and <strong>Outstanding Research Award</strong>.</span>
                         </li>
                     </ul>
                 </section>
@@ -241,53 +259,85 @@
                     <h2><span class="prompt">$</span>ls -l ./publications/</h2>
                     
                     <div class="paper-item">
-                        <div class="comment">// CVPR 2026</div>
-                        <a href="#" class="paper-title">Example Paper Title: A Very Cool Research</a>
-                        <div style="font-size: 0.9rem; color: #8b949e;">
-                            <strong>An Name</strong>, Advisor Name, Co-author
+                        <span class="paper-venue">// NeurIPS 2025</span>
+                        <a href="#" class="paper-title">Hierarchical Frequency Tagging Probe (HFTP): A Unified Approach to Investigate Syntactic Structure Representations in Large Language Models and the Human Brain</a>
+                        <div class="paper-authors">
+                            <strong>Jingmin An</strong>, Yilong Song, Ruolin Yang, Nai Ding, Lingxi Lu, Yuxuan Wang, Wei Wang, Chu Zhuang, Qian Wang, Fang Fang
                         </div>
-                        <div class="tags" style="margin-top: 8px;">
+                        <div class="tags">
                             <span>[PDF]</span> <span>[Code]</span> <span>[Project Page]</span>
                         </div>
                     </div>
 
                     <div class="paper-item">
-                        <div class="comment">// NeurIPS 2025</div>
-                        <a href="#" class="paper-title">Another Hardcore System Paper</a>
-                        <div style="font-size: 0.9rem; color: #8b949e;">
-                            Collaborator, <strong>An Name</strong>
+                        <span class="paper-venue">// Lab on a Chip 24 (6), 1586-1601 (2024)</span>
+                        <a href="#" class="paper-title">Assessing bioartificial organ function: the 3P model framework and its validation</a>
+                        <div class="paper-authors">
+                            <strong>Jingmin An</strong>, Shuyu Zhang, Juan Wu, Haolin Chen, Guoshi Xu, Yifan Hou, Ruoyu Liu, Na Li, Wenjuan Cui, Xin Li, Yi Du, Qi Gu
                         </div>
-                        <div class="tags" style="margin-top: 8px;">
-                            <span>[PDF]</span> <span>[Demo]</span>
+                        <div class="tags">
+                            <span>[PDF]</span> <span>[Code]</span>
                         </div>
                     </div>
+
+                    <div class="paper-item">
+                        <span class="paper-venue">// BMC Bioinformatics 23 (1), 467 (2023)</span>
+                        <a href="#" class="paper-title">Collectively encoding protein properties enriches protein language models</a>
+                        <div class="paper-authors">
+                            <strong>Jingmin An</strong>, Xiaogang Weng
+                        </div>
+                        <div class="tags">
+                            <span>[PDF]</span> <span>[Code]</span>
+                        </div>
+                    </div>
+
                 </section>
 
                 <section>
                     <h2><span class="prompt">$</span>cat ./achievements.json</h2>
                     
-                    <div class="award-item">
-                        <div>
-                            <span class="award-icon">🏆</span>
-                            <span class="award-title">National Scholarship</span>
+                    <div class="award-grid">
+                        <div class="award-item">
+                            <div class="award-left">
+                                <span class="award-year">2024</span>
+                                <span class="award-title">Peking University Second-Class Scholarship</span>
+                            </div>
                         </div>
-                        <span class="comment">2025</span>
-                    </div>
 
-                    <div class="award-item">
-                        <div>
-                            <span class="award-icon">🥇</span>
-                            <span class="award-title">Best Paper Award @ ICML Workshop</span>
+                        <div class="award-item">
+                            <div class="award-left">
+                                <span class="award-year">2019</span>
+                                <span class="award-title">First Prize, National Computer Design Competition for College Students</span>
+                            </div>
                         </div>
-                        <span class="comment">2024</span>
-                    </div>
 
-                    <div class="award-item">
-                        <div>
-                            <span class="award-icon">⭐</span>
-                            <span class="award-title">First Prize in Hackathon</span>
+                        <div class="award-item">
+                            <div class="award-left">
+                                <span class="award-year">2019</span>
+                                <span class="award-title">First Prize, Youth Cup National Mathematical Modeling Contest</span>
+                            </div>
                         </div>
-                        <span class="comment">2023</span>
+
+                        <div class="award-item">
+                            <div class="award-left">
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Outstanding Graduate of Chongqing Municipality</span>
+                            </div>
+                        </div>
+                        
+                        <div class="award-item">
+                            <div class="award-left">
+                                <span class="award-year">2019</span>
+                                <span class="award-title">Outstanding Merit Student of Chongqing Municipality</span>
+                            </div>
+                        </div>
+
+                        <div class="award-item">
+                            <div class="award-left">
+                                <span class="award-year">2018</span>
+                                <span class="award-title">Third Prize, National English Competition for College Students</span>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -297,8 +347,8 @@
 
     <div class="status-bar">
         <div>USER: root@an</div>
-        <div>STATUS: ONLINE</div>
-        <div>LAST LOGIN: TODAY</div>
+        <div>ENV: PKU_LAB</div>
+        <div>STATUS: RESEARCHING...</div>
     </div>
 
     <script>
