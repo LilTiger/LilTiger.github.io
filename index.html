@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Root | [Your Name]</title>
+    <title>System Root | An</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #050a0e; /* 深邃黑蓝 */
+            --bg-color: #050a0e;
             --term-bg: rgba(13, 17, 23, 0.85);
             --text-main: #c9d1d9;
             --accent: #00f0ff; /* 赛博青 */
             --accent-sec: #00ff41; /* 黑客绿 */
+            --gold: #ffd700;   /* 奖项金 */
             --dim: #484f58;
             --font-stack: 'Fira Code', monospace;
         }
@@ -23,126 +24,122 @@
             font-family: var(--font-stack);
             margin: 0;
             overflow-x: hidden;
-            height: 100vh;
-            /* 极客背景网格 */
+            min-height: 100vh;
             background-image: 
                 linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* === 1. 开机动画遮罩 === */
+        /* === 开机动画 === */
         #boot-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 9999;
-            padding: 20px;
-            color: var(--accent-sec);
-            font-size: 14px;
-            line-height: 1.5;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; padding: 20px;
+            color: var(--accent-sec); font-size: 14px; line-height: 1.5;
+            display: flex; flex-direction: column; justify-content: flex-end;
         }
 
-        /* === 2. CRT 屏幕特效 (扫描线) === */
+        /* === CRT 扫描线 === */
         .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.1) 50%,
-                rgba(0,0,0,0.1)
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px; pointer-events: none; z-index: 999;
         }
 
-        /* === 主布局 === */
+        /* === 主容器 === */
         .container {
-            max-width: 900px;
-            margin: 5vh auto;
-            position: relative;
-            z-index: 10;
-            opacity: 0; /* 初始隐藏，等开机动画结束 */
-            animation: fadeIn 1s ease 2.5s forwards;
+            max-width: 900px; margin: 5vh auto; position: relative; z-index: 10;
+            opacity: 0; animation: fadeIn 1s ease 2.2s forwards;
+            padding-bottom: 50px;
         }
-
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* 终端窗口外壳 */
+        /* 终端窗口 */
         .terminal-window {
             background: var(--term-bg);
             border: 1px solid var(--dim);
             border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
             backdrop-filter: blur(10px);
             overflow: hidden;
         }
 
-        /* 窗口顶部栏 */
         .window-bar {
-            background: #161b22;
-            padding: 10px 15px;
-            border-bottom: 1px solid var(--dim);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: #161b22; padding: 10px 15px; border-bottom: 1px solid var(--dim);
+            display: flex; align-items: center; gap: 8px;
         }
         .dot { width: 12px; height: 12px; border-radius: 50%; }
         .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
         .window-title { margin-left: 15px; font-size: 12px; color: #8b949e; }
 
-        /* 内容区域 */
         .content { padding: 40px; }
 
-        /* === 3. 打字动画 === */
+        /* === 头部区域 (Avatar + Intro) === */
+        .header-section {
+            display: flex; gap: 30px; align-items: flex-start; margin-bottom: 40px;
+        }
+        
+        .avatar-container {
+            flex-shrink: 0;
+            position: relative;
+        }
+        
+        /* 这里的图片样式 */
+        .avatar-img {
+            width: 140px; height: 140px;
+            object-fit: cover;
+            border-radius: 4px; /* 稍微圆角，保持硬朗 */
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); /* 发光效果 */
+            filter: contrast(1.1) brightness(1.1);
+        }
+
+        /* 动态打字 */
         .typing-effect {
             border-right: 2px solid var(--accent);
-            white-space: nowrap;
-            overflow: hidden;
+            white-space: nowrap; overflow: hidden;
             animation: blink 0.75s step-end infinite;
-            display: inline-block;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 20px;
+            display: inline-block; font-size: 2rem; font-weight: bold; color: #fff;
+            margin-bottom: 10px;
         }
         @keyframes blink { 50% { border-color: transparent; } }
 
-        /* 命令行提示符样式 */
         .prompt { color: var(--accent-sec); margin-right: 10px; }
         .cmd { color: var(--accent); }
-        .comment { color: #8b949e; font-style: italic; }
+        .comment { color: #8b949e; font-style: italic; font-size: 0.9rem; }
 
         /* 章节通用 */
         section { margin-bottom: 50px; }
         h2 { 
-            font-size: 1.2rem; 
-            border-bottom: 1px dashed var(--dim); 
-            padding-bottom: 10px; 
-            color: var(--accent);
-            margin-bottom: 20px;
+            font-size: 1.2rem; border-bottom: 1px dashed var(--dim); 
+            padding-bottom: 10px; color: var(--accent); margin-bottom: 20px;
         }
 
-        /* 技能矩阵 (Skill Bars) */
-        .skill-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .skill-item { margin-bottom: 10px; }
-        .skill-name { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; }
-        .progress-bar { height: 6px; background: #21262d; border-radius: 3px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent); width: 0; animation: loadSkill 1.5s ease-out forwards; animation-delay: 3s; }
-        
-        @keyframes loadSkill { from { width: 0; } }
+        /* === NEWS 列表 === */
+        .news-list { list-style: none; padding: 0; font-family: var(--font-stack); }
+        .news-item {
+            margin-bottom: 12px; display: flex; align-items: baseline;
+        }
+        .news-date {
+            color: var(--accent-sec); min-width: 110px; font-weight: bold;
+        }
+        .news-text { color: var(--text-main); }
 
-        /* 论文列表 */
+        /* === AWARDS (成就系统) === */
+        .award-item {
+            border: 1px solid var(--dim);
+            background: rgba(255, 215, 0, 0.05);
+            padding: 15px; margin-bottom: 10px; border-radius: 4px;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s;
+        }
+        .award-item:hover { border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+        .award-title { font-weight: bold; color: #fff; }
+        .award-icon { color: var(--gold); margin-right: 10px; }
+
+        /* === 论文列表 === */
         .paper-item {
-            border-left: 2px solid var(--dim);
-            padding-left: 15px;
-            margin-bottom: 25px;
+            border-left: 2px solid var(--dim); padding-left: 15px; margin-bottom: 25px;
             transition: all 0.3s;
         }
         .paper-item:hover { border-left-color: var(--accent); background: rgba(255,255,255,0.02); }
@@ -160,21 +157,27 @@
             padding: 5px 20px; font-size: 12px; color: #8b949e;
             display: flex; justify-content: space-between; z-index: 100;
         }
-
-        /* 链接样式 */
+        
         a { color: inherit; text-decoration: none; }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .header-section { flex-direction: column-reverse; align-items: center; text-align: center; }
+            .typing-effect { font-size: 1.5rem; white-space: normal; animation: none; border: none; }
+            .news-item { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
 
     <div id="boot-screen">
-        <div>[ OK ] Kernel panic not detected.</div>
-        <div>[ OK ] Loading academic modules...</div>
-        <div>[ OK ] Mounting file system (CV, Papers, Code)...</div>
-        <div>[ OK ] Initializing neural networks...</div>
-        <div>[ OK ] Starting user interface...</div>
+        <div>[ OK ] Verifying user identity: root@an...</div>
+        <div>[ OK ] Loading module: News...</div>
+        <div>[ OK ] Loading module: Publications...</div>
+        <div>[ OK ] Loading module: Honors & Awards...</div>
+        <div>[ OK ] System integrity verified.</div>
         <br>
-        <div>> System Ready. Welcome, User.</div>
+        <div>> Access Granted.</div>
     </div>
 
     <div class="scanlines"></div>
@@ -184,62 +187,64 @@
             
             <div class="window-bar">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-                <div class="window-title">user@scholar-server: ~/profile</div>
+                <div class="window-title">root@an: ~/profile_v2.0</div>
             </div>
 
             <div class="content">
                 
-                <section>
-                    <div>
-                        <span class="prompt">root@zhang:~#</span> 
-                        <span class="cmd">./init_profile.sh</span>
+                <section class="header-section">
+                    <div style="flex: 1;">
+                        <div>
+                            <span class="prompt">root@an:~#</span> 
+                            <span class="cmd">./whoami</span>
+                        </div>
+                        <br>
+                        <div class="typing-effect" style="width: 0; animation: typing 2s steps(20, end) forwards 2.5s, blink 0.75s step-end infinite;">
+                            Hello, I'm An.
+                        </div>
+                        <p style="color: #8b949e; line-height: 1.8;">
+                            > Ph.D. Candidate at University of Science.<br>
+                            > Research Interests: <strong>AI Security</strong> & <strong>Systems</strong>.<br>
+                            > "Code is poetry, binaries are truth."
+                        </p>
+                        <div style="margin-top: 20px;">
+                            <a href="mailto:your@email.com" style="border-bottom: 1px solid var(--accent); margin-right: 15px;">[Email]</a>
+                            <a href="#" style="border-bottom: 1px solid var(--accent); margin-right: 15px;">[Github]</a>
+                            <a href="#" style="border-bottom: 1px solid var(--accent);">[Scholar]</a>
+                        </div>
                     </div>
-                    <br>
-                    <div class="typing-effect" style="width: 0; animation: typing 2s steps(30, end) forwards 2.8s, blink 0.75s step-end infinite;">
-                        Hello, I'm San Zhang.
-                    </div>
-                    <p style="color: #8b949e; max-width: 600px;">
-                        > Ph.D. Candidate at University of Science.<br>
-                        > Researching <strong>Computer Vision</strong> & <strong>Robotics</strong>.<br>
-                        > I write code that learns.
-                    </p>
-                    <div style="margin-top: 20px;">
-                        <a href="mailto:test@test.com" style="border-bottom: 1px solid var(--accent); margin-right: 15px;">[Email]</a>
-                        <a href="#" style="border-bottom: 1px solid var(--accent); margin-right: 15px;">[Github]</a>
-                        <a href="#" style="border-bottom: 1px solid var(--accent);">[Scholar]</a>
+
+                    <div class="avatar-container">
+                        <img src="https://via.placeholder.com/150" alt="An's Avatar" class="avatar-img">
                     </div>
                 </section>
 
                 <section>
-                    <h2><span class="prompt">$</span>cat /var/lib/skills</h2>
-                    <div class="skill-grid">
-                        <div class="skill-item">
-                            <div class="skill-name"><span>Python / Pytorch</span><span>95%</span></div>
-                            <div class="progress-bar"><div class="progress-fill" style="width: 95%"></div></div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name"><span>C++ / CUDA</span><span>80%</span></div>
-                            <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name"><span>Latex Writing</span><span>90%</span></div>
-                            <div class="progress-bar"><div class="progress-fill" style="width: 90%"></div></div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-name"><span>Coffee Consumption</span><span>100%</span></div>
-                            <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: #ff5f56;"></div></div>
-                        </div>
-                    </div>
+                    <h2><span class="prompt">$</span>cat /var/log/system_updates</h2>
+                    <ul class="news-list">
+                        <li class="news-item">
+                            <span class="news-date">[2026-02-15]</span>
+                            <span class="news-text">Paper "The Future of AI" accepted to <strong>CVPR 2026</strong> (Oral).</span>
+                        </li>
+                        <li class="news-item">
+                            <span class="news-date">[2025-11-20]</span>
+                            <span class="news-text">Attended NeurIPS in San Diego.</span>
+                        </li>
+                        <li class="news-item">
+                            <span class="news-date">[2025-06-01]</span>
+                            <span class="news-text">Started Research Internship at Microsoft.</span>
+                        </li>
+                    </ul>
                 </section>
 
                 <section>
                     <h2><span class="prompt">$</span>ls -l ./publications/</h2>
                     
                     <div class="paper-item">
-                        <div class="comment">// CVPR 2026 (Oral Presentation)</div>
-                        <a href="#" class="paper-title">Deep Learning for Autonomous Navigation in Complex Environments</a>
+                        <div class="comment">// CVPR 2026</div>
+                        <a href="#" class="paper-title">Example Paper Title: A Very Cool Research</a>
                         <div style="font-size: 0.9rem; color: #8b949e;">
-                            <strong>S. Zhang</strong>, A. Turing, J. Hinton
+                            <strong>An Name</strong>, Advisor Name, Co-author
                         </div>
                         <div class="tags" style="margin-top: 8px;">
                             <span>[PDF]</span> <span>[Code]</span> <span>[Project Page]</span>
@@ -248,23 +253,41 @@
 
                     <div class="paper-item">
                         <div class="comment">// NeurIPS 2025</div>
-                        <a href="#" class="paper-title">Understanding the Latent Space of Large Language Models</a>
+                        <a href="#" class="paper-title">Another Hardcore System Paper</a>
                         <div style="font-size: 0.9rem; color: #8b949e;">
-                            G. Marcus, <strong>S. Zhang</strong>
+                            Collaborator, <strong>An Name</strong>
                         </div>
                         <div class="tags" style="margin-top: 8px;">
                             <span>[PDF]</span> <span>[Demo]</span>
                         </div>
                     </div>
-
                 </section>
 
                 <section>
-                    <h2><span class="prompt">$</span>tail -n 5 /var/log/syslog</h2>
-                    <div style="font-family: monospace; font-size: 0.9rem; line-height: 1.8;">
-                        <div><span style="color: var(--accent-sec);">[2026-01-04 10:00]</span> INFO: Paper accepted to CVPR 2026.</div>
-                        <div><span style="color: var(--accent-sec);">[2025-11-20 09:30]</span> WARN: Sleep deprivation detected during deadline.</div>
-                        <div><span style="color: var(--accent-sec);">[2025-09-01 08:00]</span> INFO: Started internship at Google Research.</div>
+                    <h2><span class="prompt">$</span>cat ./achievements.json</h2>
+                    
+                    <div class="award-item">
+                        <div>
+                            <span class="award-icon">🏆</span>
+                            <span class="award-title">National Scholarship</span>
+                        </div>
+                        <span class="comment">2025</span>
+                    </div>
+
+                    <div class="award-item">
+                        <div>
+                            <span class="award-icon">🥇</span>
+                            <span class="award-title">Best Paper Award @ ICML Workshop</span>
+                        </div>
+                        <span class="comment">2024</span>
+                    </div>
+
+                    <div class="award-item">
+                        <div>
+                            <span class="award-icon">⭐</span>
+                            <span class="award-title">First Prize in Hackathon</span>
+                        </div>
+                        <span class="comment">2023</span>
                     </div>
                 </section>
 
@@ -273,29 +296,23 @@
     </div>
 
     <div class="status-bar">
-        <div>MODE: INSERT</div>
-        <div>CPU: 12% | RAM: 4.2GB</div>
-        <div>UTF-8</div>
+        <div>USER: root@an</div>
+        <div>STATUS: ONLINE</div>
+        <div>LAST LOGIN: TODAY</div>
     </div>
 
     <script>
-        // 简单的脚本：处理开机动画的消失
-        // 等待2.5秒后，隐藏boot-screen
+        // 开机动画控制
         setTimeout(() => {
             const bootScreen = document.getElementById('boot-screen');
             bootScreen.style.opacity = '0';
             bootScreen.style.transition = 'opacity 0.5s';
-            setTimeout(() => {
-                bootScreen.style.display = 'none';
-            }, 500);
+            setTimeout(() => { bootScreen.style.display = 'none'; }, 500);
         }, 2200);
 
-        // 打字机动画的CSS width修正
+        // 打字机CSS宽度修正
         const typingElement = document.querySelector('.typing-effect');
         typingElement.style.width = '0';
-        
-        // 动画控制：确保字数不同时也能适配
-        // 这里使用纯CSS animation实现，无需复杂JS
     </script>
 
 </body>
