@@ -3,209 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name | Academic Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <title>San Zhang | Academic Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================
-           STYLE 1: Motion Minimalist (动态极简风)
-           ========================================= */
         :root {
-            --bg-color: #ffffff;
-            --text-primary: #111;
-            --text-secondary: #666;
-            --accent-color: #0056b3;
-            --font-main: 'Inter', sans-serif;
-            --font-code: 'Space Mono', monospace;
-        }
+    --bg-color: #0d1117;
+    --card-bg: #161b22;
+    --text-main: #c9d1d9;
+    --accent: #00ff41; /* 经典的黑客绿 */
+    --accent-dim: rgba(0, 255, 65, 0.1);
+    --border: #30363d;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: var(--font-main);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace; /* 纯代码字体 */
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
 
-        /* 布局容器 */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 80px 20px;
-        }
+.layout-container {
+    max-width: 900px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+}
 
-        /* 动画关键帧：淡入上浮 */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+/* 侧边栏：伪装成系统窗口 */
+.profile-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0;
+    position: sticky;
+    top: 40px;
+    height: fit-content;
+}
 
-        /* 逐个应用动画 */
-        .animate-item {
-            opacity: 0; /* 初始隐藏 */
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.3s; }
-        .delay-3 { animation-delay: 0.5s; }
-        .delay-4 { animation-delay: 0.7s; }
+.terminal-header {
+    background: #21262d;
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
 
-        /* 头部设计 */
-        header { margin-bottom: 60px; }
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin: 0 0 10px 0;
-            letter-spacing: -2px; /* 紧凑字间距，显得高级 */
-        }
-        .subtitle { font-size: 1.2rem; color: var(--text-secondary); }
-        
-        /* 社交链接 */
-        .social-links { margin-top: 20px; }
-        .social-links a {
-            margin-right: 20px;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-weight: 600;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        .social-links a:hover {
-            border-bottom: 2px solid var(--accent-color);
-            color: var(--accent-color);
-        }
+.profile-content { padding: 25px; text-align: center; }
 
-        /* 章节标题 */
-        h2 {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-secondary);
-            margin-top: 60px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* 如果想要更复古，可以改成 0% 变成方块 */
+    border: 2px solid var(--accent);
+    filter: grayscale(100%); /* 黑白照片更显极客 */
+    margin-bottom: 15px;
+}
 
-        /* 论文列表交互 */
-        .paper-item {
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            transition: transform 0.2s, background 0.2s;
-            cursor: default;
-        }
-        .paper-item:hover {
-            background: #f8f9fa;
-            transform: scale(1.02); /* 微微放大 */
-        }
-        .paper-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-            display: block;
-        }
-        .paper-meta { font-family: var(--font-code); font-size: 0.9rem; color: var(--text-secondary); }
-        .tag-btn {
-            display: inline-block;
-            margin-top: 8px;
-            font-size: 12px;
-            padding: 4px 10px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            text-decoration: none;
-            color: #555;
-            transition: all 0.2s;
-        }
-        .tag-btn:hover { background: #111; color: #fff; border-color: #111; }
+h1 { font-size: 1.5rem; margin: 10px 0; color: #fff; }
+h1::before { content: "./"; color: var(--accent); }
 
-        /* News 列表 */
-        .news-item {
-            display: flex;
-            margin-bottom: 10px;
-            border-left: 3px solid transparent;
-            padding-left: 10px;
-            transition: border-color 0.3s;
-        }
-        .news-item:hover { border-left: 3px solid var(--accent-color); }
-        .news-date {
-            font-family: var(--font-code);
-            width: 100px;
-            color: var(--text-secondary);
-        }
+.role { color: #8b949e; font-size: 0.9rem; margin-bottom: 20px; }
 
+.tags span {
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.social-links { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.social-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: 0.2s;
+}
+.social-links a:hover {
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 10px var(--accent);
+}
+.social-links a::before { content: "$ ssh "; color: #8b949e; font-size: 0.8em; }
+
+/* 主内容区 */
+.section-title {
+    color: var(--accent);
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 10px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.block-section { margin-bottom: 50px; }
+
+.highlight { background: #fff; color: #000; padding: 0 4px; }
+
+.news-list { list-style: none; padding: 0; }
+.news-list li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+.news-list li::before { content: ">"; color: var(--accent); position: absolute; left: 0; }
+.date { color: #8b949e; margin-right: 10px; }
+
+/* 论文卡片 */
+.paper-card {
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 15px;
+    background: #0d1117;
+    transition: 0.3s;
+    display: flex;
+    gap: 20px;
+}
+.paper-card:hover { border-color: var(--accent); transform: translateX(10px); }
+
+.paper-year { color: #8b949e; writing-mode: vertical-rl; text-orientation: mixed; border-right: 1px solid var(--border); padding-right: 10px; }
+
+.paper-title { margin: 0 0 10px 0; font-size: 1.1rem; color: #fff; }
+.badge { background: #d2a8ff; color: #000; font-size: 0.7rem; padding: 2px 6px; border-radius: 2px; margin-left: 10px; }
+
+.btn {
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.btn:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .layout-container { grid-template-columns: 1fr; }
+    .profile-card { position: relative; top: 0; }
+}
     </style>
-</head>
+    </head>
 <body>
 
-    <div class="container">
+    <div class="layout-container">
         
-        <header class="animate-item delay-1">
-            <h1>San Zhang.</h1>
-            <div class="subtitle">Ph.D. Candidate in Computer Science @ University of Example</div>
-            <div class="social-links">
-                <a href="mailto:email@example.com">Email</a>
-                <a href="#">Google Scholar</a>
-                <a href="#">GitHub</a>
-                <a href="#">Twitter/X</a>
+        <aside class="profile-card">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
             </div>
-        </header>
-
-        <section class="animate-item delay-2">
-            <h2>About</h2>
-            <p>
-                I am a researcher bridging the gap between <strong>Human Perception</strong> and <strong>Artificial Intelligence</strong>. 
-                My focus lies in Generative Models and Computer Vision. I strive to build systems that are not only intelligent but also interpretable.
-            </p>
-        </section>
-
-        <section class="animate-item delay-3">
-            <h2>Latest News</h2>
-            <div class="news-item">
-                <div class="news-date">2026.01</div>
-                <div>Paper "Deep Learning for X" accepted to <strong>CVPR 2026</strong>.</div>
+            <div class="profile-content">
+                <img src="https://via.placeholder.com/150" alt="Profile" class="avatar">
+                <h1 class="glitch-text" data-text="San Zhang">San Zhang</h1>
+                <p class="role">Ph.D. Candidate / Hacker</p>
+                <div class="tags">
+                    <span>#AI</span> <span>#Robotics</span> <span>#Vision</span>
+                </div>
+                <div class="social-links">
+                    <a href="mailto:test@test.com">Email</a>
+                    <a href="#">Github</a>
+                    <a href="#">Scholar</a>
+                    <a href="#">Twitter</a>
+                </div>
             </div>
-            <div class="news-item">
-                <div class="news-date">2025.11</div>
-                <div>Invited talk at Microsoft Research Asia.</div>
-            </div>
-        </section>
+        </aside>
 
-        <section class="animate-item delay-4">
-            <h2>Selected Publications</h2>
+        <main class="main-content">
             
-            <div class="paper-item">
-                <span class="paper-title">Generative Adversarial Networks for High-Fidelity Image Synthesis</span>
-                <div class="paper-meta">
-                    <strong>S. Zhang</strong>, A. Advisor, B. Collaborator <br>
-                    <span style="color: #c0392b;">CVPR 2026 (Oral)</span>
+            <section class="block-section">
+                <h2 class="section-title">> Biography_</h2>
+                <div class="text-content">
+                    <p>
+                        I am a researcher at the intersection of <span class="highlight">Machine Learning</span> and <span class="highlight">Systems</span>. 
+                        My goal is to demystify black-box models. Currently hacking at University of Example.
+                    </p>
                 </div>
-                <div>
-                    <a href="#" class="tag-btn">PDF</a>
-                    <a href="#" class="tag-btn">Code</a>
-                    <a href="#" class="tag-btn">Project Page</a>
-                </div>
-            </div>
+            </section>
 
-            <div class="paper-item">
-                <span class="paper-title">Understanding Self-Supervised Learning</span>
-                <div class="paper-meta">
-                    C. Collab, <strong>S. Zhang</strong>, A. Advisor <br>
-                    <span>NeurIPS 2025</span>
-                </div>
-                <div>
-                    <a href="#" class="tag-btn">PDF</a>
-                    <a href="#" class="tag-btn">Code</a>
-                </div>
-            </div>
-        </section>
+            <section class="block-section">
+                <h2 class="section-title">> System_Logs (News)</h2>
+                <ul class="news-list">
+                    <li><span class="date">[2026.01]</span> Kernel updated: Paper accepted to <strong>CVPR 2026</strong>.</li>
+                    <li><span class="date">[2025.11]</span> Deployed to San Diego for NeurIPS.</li>
+                </ul>
+            </section>
 
-        <footer style="margin-top: 80px; color: #999; font-size: 12px; text-align: center;">
-            &copy; 2026 San Zhang. Design by Gemini.
-        </footer>
+            <section class="block-section">
+                <h2 class="section-title">> Executables (Publications)</h2>
+                
+                <article class="paper-card">
+                    <div class="paper-year">2026</div>
+                    <div class="paper-details">
+                        <h3 class="paper-title">Neural Networks for Infinite Context Length</h3>
+                        <div class="paper-authors"><strong>S. Zhang</strong>, A. Turing, J. Hinton</div>
+                        <div class="paper-venue">CVPR 2026 <span class="badge">Oral</span></div>
+                        <div class="paper-actions">
+                            <a href="#" class="btn">[PDF]</a>
+                            <a href="#" class="btn">[Code]</a>
+                        </div>
+                    </div>
+                </article>
 
+                <article class="paper-card">
+                    <div class="paper-year">2025</div>
+                    <div class="paper-details">
+                        <h3 class="paper-title">Hacking the Latent Space</h3>
+                        <div class="paper-authors">G. Marcus, <strong>S. Zhang</strong></div>
+                        <div class="paper-venue">NeurIPS 2025</div>
+                        <div class="paper-actions">
+                            <a href="#" class="btn">[PDF]</a>
+                            <a href="#" class="btn">[Demo]</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+        </main>
     </div>
 
 </body>
