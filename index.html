@@ -89,16 +89,17 @@
             filter: contrast(1.1) brightness(1.1);
         }
 
-        /* === 动态打字容器 (防抖动版) === */
+        /* === 动态打字容器 (防抖动修复版) === */
         .typing-container {
             font-size: 1.8rem; 
             font-weight: bold; 
             color: #fff;
             margin-bottom: 15px;
             display: flex; 
-            align-items: center;
+            /* 修复1：对齐方式改为顶部对齐，防止文字只有一行时在垂直方向跳动 */
+            align-items: flex-start;
             line-height: 1.5;
-            min-height: 1.5em; 
+            min-height: 1.5em; /* 电脑端默认高度 */
         }
         .typing-container::before {
             content: '\200b'; 
@@ -109,6 +110,8 @@
             display: inline-block; width: 10px; height: 1.8rem;
             background-color: var(--accent); margin-left: 5px;
             animation: blink 0.75s step-end infinite;
+            /* 修复2：微调光标位置，适应顶部对齐 */
+            margin-top: 5px; 
         }
         @keyframes blink { 50% { opacity: 0; } }
 
@@ -137,7 +140,7 @@
         .news-date { color: var(--accent-sec); min-width: 130px; font-weight: bold; font-size: 0.9rem; }
         .news-text { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
 
-        /* Publications & Education 共用列表样式 */
+        /* Publications & Education */
         .paper-item, .edu-item {
             border-left: 2px solid var(--dim); padding-left: 20px; margin-bottom: 30px;
             transition: all 0.3s;
@@ -148,7 +151,6 @@
             color: #8b949e; font-style: italic; font-size: 0.85rem; margin-bottom: 5px; 
             display: block; font-family: var(--font-stack);
         }
-        /* 教育板块的时间高亮一点 */
         .edu-time { color: var(--accent-sec); font-style: normal; font-weight: bold; }
 
         .paper-title, .edu-degree { 
@@ -188,9 +190,17 @@
             display: flex; justify-content: space-between; z-index: 100;
         }
 
+        /* 响应式调整 (手机端核心修复) */
         @media (max-width: 768px) {
             .header-section { flex-direction: column-reverse; align-items: center; text-align: center; }
-            .typing-container { font-size: 1.4rem; justify-content: center; }
+            
+            /* 修复3：手机端强制预留 3行 文字的高度，防止抖动 */
+            .typing-container { 
+                font-size: 1.4rem; 
+                justify-content: center; 
+                min-height: 3.6rem; /* 预留足够高度 */
+            }
+            
             .news-item { flex-direction: column; }
             .award-item { flex-direction: column; align-items: flex-start; gap: 5px; }
         }
