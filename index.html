@@ -89,7 +89,7 @@
             filter: contrast(1.1) brightness(1.1);
         }
 
-        /* === 修复后的动态打字容器 === */
+        /* === 动态打字容器 (防抖动版) === */
         .typing-container {
             font-size: 1.8rem; 
             font-weight: bold; 
@@ -97,11 +97,9 @@
             margin-bottom: 15px;
             display: flex; 
             align-items: center;
-            /* 关键修复：强制设置行高和最小高度，防止高度塌陷 */
             line-height: 1.5;
             min-height: 1.5em; 
         }
-        /* 双重保险：插入一个不可见的零宽空格，确保容器永远有内容撑起高度 */
         .typing-container::before {
             content: '\200b'; 
             display: inline-block;
@@ -255,6 +253,10 @@
                             <span class="news-text">Attended <strong>SfN 2025</strong> annual meeting.</span>
                         </li>
                         <li class="news-item">
+                            <span class="news-date">[2025-10]</span>
+                            <span class="news-text">HFTP won <strong>Outstanding Work Award</strong> at <strong>PKU AI Tech Day</strong>.</span>
+                        </li>
+                        <li class="news-item">
                             <span class="news-date">[2025-09-20]</span>
                             <span class="news-text">
                                 Paper <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/117236" target="_blank" class="paper-link">HFTP</a> accepted to <strong>NeurIPS 2025</strong>!
@@ -334,21 +336,14 @@
                         <div class="award-item">
                             <div class="award-left">
                                 <span class="award-year">2019</span>
-                                <span class="award-title">Outstanding Graduate of Chongqing Municipality</span>
+                                <span class="award-title">Outstanding Graduate (Chongqing Municipality, China)</span>
                             </div>
                         </div>
                         
                         <div class="award-item">
                             <div class="award-left">
                                 <span class="award-year">2019</span>
-                                <span class="award-title">Outstanding Merit Student of Chongqing Municipality</span>
-                            </div>
-                        </div>
-
-                        <div class="award-item">
-                            <div class="award-left">
-                                <span class="award-year">2018</span>
-                                <span class="award-title">Third Prize, National English Competition</span>
+                                <span class="award-title">Outstanding Merit Student (Chongqing Municipality, China)</span>
                             </div>
                         </div>
                     </div>
@@ -376,9 +371,10 @@
         // 2. 动态打字机引擎
         const textElement = document.getElementById('typewriter-text');
         
-        // 循环播放的名言
+        // ⚡️ 循环播放的名言 ⚡️
         const texts = [
             "Hello, I'm Jingmin An.",
+            "Code is poetry, binaries are truth.",
             "Seeking truth in the noise.",
             "Ad Astra Per Aspera."
         ];
