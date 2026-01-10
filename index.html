@@ -137,22 +137,26 @@
         .news-date { color: var(--accent-sec); min-width: 130px; font-weight: bold; font-size: 0.9rem; }
         .news-text { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
 
-        /* Publications */
-        .paper-item {
+        /* Publications & Education 共用列表样式 */
+        .paper-item, .edu-item {
             border-left: 2px solid var(--dim); padding-left: 20px; margin-bottom: 30px;
             transition: all 0.3s;
         }
-        .paper-item:hover { border-left-color: var(--accent); background: rgba(255,255,255,0.02); }
+        .paper-item:hover, .edu-item:hover { border-left-color: var(--accent); background: rgba(255,255,255,0.02); }
         
-        .paper-venue { 
+        .paper-venue, .edu-time { 
             color: #8b949e; font-style: italic; font-size: 0.85rem; margin-bottom: 5px; 
             display: block; font-family: var(--font-stack);
         }
-        .paper-title { 
+        /* 教育板块的时间高亮一点 */
+        .edu-time { color: var(--accent-sec); font-style: normal; font-weight: bold; }
+
+        .paper-title, .edu-degree { 
             font-size: 1.1rem; color: #fff; font-weight: 600; line-height: 1.4; display: block; margin-bottom: 8px; 
         }
         .paper-title:hover { text-decoration: underline; text-decoration-color: var(--accent); }
-        .paper-authors { font-size: 0.9rem; color: #a5d6ff; line-height: 1.5; margin-bottom: 10px; }
+        
+        .paper-authors, .edu-school { font-size: 0.9rem; color: #a5d6ff; line-height: 1.5; margin-bottom: 10px; }
         
         .tags a { 
             font-size: 12px; background: rgba(0, 240, 255, 0.1); display: inline-block;
@@ -231,7 +235,7 @@
                         <div class="bio-text">
                             <p>
                                 > Ph.D. Candidate at <strong>Peking University (PKU)</strong> (Advisor: <a href="https://www.psy.pku.edu.cn/english/people/faculty/professor/fangfang/index.htm" target="_blank" class="link-highlight">Prof. Fang Fang</a>).<br>
-                                > Interests: <span style="color: #fff;">Computational Psychology (Brain Science)</span>, <span style="color: #fff;">NLP</span> & <span style="color: #fff;">Interpretability</span>.
+                                > Interests: <span style="color: #fff;">Computational Neuroscience</span>, <span style="color: #fff;">Cognitive Science</span>, <span style="color: #fff;">Computational Linguistics</span> & <span style="color: #fff;">Model Interpretability</span>.
                             </p>
                         </div>
                         <div style="margin-top: 25px;">
@@ -296,6 +300,17 @@
                     </div>
 
                     <div class="paper-item">
+                        <span class="paper-venue">// Scientific Reports 13, 2960 (2023)</span>
+                        <a href="https://www.nature.com/articles/s41598-023-29600-1" target="_blank" class="paper-title">Insect recognition based on complementary features from multiple views</a>
+                        <div class="paper-authors">
+                            <strong>Jingmin An</strong>, Yong Du, Peng Hong, Lei Zhang, Xiaogang Weng
+                        </div>
+                        <div class="tags">
+                            <a href="https://www.nature.com/articles/s41598-023-29600-1" target="_blank">[Page]</a>
+                        </div>
+                    </div>
+
+                    <div class="paper-item">
                         <span class="paper-venue">// BMC Bioinformatics 23 (1), 467 (2023)</span>
                         <a href="https://link.springer.com/article/10.1186/s12859-022-05031-z" target="_blank" class="paper-title">Collectively encoding protein properties enriches protein language models</a>
                         <div class="paper-authors">
@@ -305,7 +320,22 @@
                             <a href="https://link.springer.com/article/10.1186/s12859-022-05031-z" target="_blank">[Page]</a>
                         </div>
                     </div>
+                </section>
 
+                <section>
+                    <h2><span class="prompt">$</span>cat ./education_history</h2>
+                    
+                    <div class="edu-item">
+                        <span class="edu-time">[2023.09 - Present]</span>
+                        <div class="edu-degree">Ph.D. Student</div>
+                        <div class="edu-school">Academy for Advanced Interdisciplinary Studies, Peking University</div>
+                    </div>
+
+                    <div class="edu-item">
+                        <span class="edu-time">[2021.09 - 2023.06]</span>
+                        <div class="edu-degree">Master of Science</div>
+                        <div class="edu-school">Institute of Zoology, Chinese Academy of Sciences & Northeast Agricultural University</div>
+                    </div>
                 </section>
 
                 <section>
