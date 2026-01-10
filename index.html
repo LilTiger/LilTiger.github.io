@@ -89,29 +89,32 @@
             filter: contrast(1.1) brightness(1.1);
         }
 
-        /* === 动态打字容器 (防抖动修复版) === */
+        /* === 修复版：动态打字容器 === */
         .typing-container {
             font-size: 1.8rem; 
             font-weight: bold; 
             color: #fff;
             margin-bottom: 15px;
-            display: flex; 
-            /* 修复1：对齐方式改为顶部对齐，防止文字只有一行时在垂直方向跳动 */
-            align-items: flex-start;
-            line-height: 1.5;
-            min-height: 1.5em; /* 电脑端默认高度 */
-        }
-        .typing-container::before {
-            content: '\200b'; 
-            display: inline-block;
+            /* 修复1：去掉 flex，使用 block 布局，让光标跟随文本流 */
+            display: block; 
+            line-height: 1.4;
+            /* 修复2：预留高度。
+               电脑端通常一行(约2.6rem)，但为了防止"跳动"，我们给它预留一点余量。
+               移动端适配在下方的 @media 中单独设置 */
+            min-height: 2.6rem; 
+            /* 保持文字左对齐，防止换行时居中导致的混乱 */
+            text-align: left;
         }
 
         .cursor {
-            display: inline-block; width: 10px; height: 1.8rem;
-            background-color: var(--accent); margin-left: 5px;
+            /* 修复3：使用 inline-block，使其像文字一样排列 */
+            display: inline-block; 
+            width: 10px; 
+            height: 1.6rem; /* 稍微调整光标高度以匹配文字 */
+            background-color: var(--accent); 
+            margin-left: 5px;
+            vertical-align: text-bottom; /* 底部对齐 */
             animation: blink 0.75s step-end infinite;
-            /* 修复2：微调光标位置，适应顶部对齐 */
-            margin-top: 5px; 
         }
         @keyframes blink { 50% { opacity: 0; } }
 
@@ -190,19 +193,26 @@
             display: flex; justify-content: space-between; z-index: 100;
         }
 
-        /* 响应式调整 (手机端核心修复) */
+        /* === 移动端适配 === */
         @media (max-width: 768px) {
             .header-section { flex-direction: column-reverse; align-items: center; text-align: center; }
             
-            /* 修复3：手机端强制预留 3行 文字的高度，防止抖动 */
+            /* 修复：移动端字体稍微变小，但预留高度增加到2行甚至3行 */
             .typing-container { 
                 font-size: 1.4rem; 
-                justify-content: center; 
-                min-height: 4.2rem; /* 预留足够高度 */
+                justify-content: center; /* 虽然是block，但可以通过文字居中 */
+                text-align: center;
+                /* 关键修复：预留足够高度防止抖动。
+                   1.4rem * 1.4行高 * 3行 ≈ 5.8rem。预留3行空间比较稳妥。 */
+                min-height: 5rem; 
             }
-            
+
             .news-item { flex-direction: column; }
             .award-item { flex-direction: column; align-items: flex-start; gap: 5px; }
+            
+            /* 移动端内容间距调整 */
+            .content { padding: 20px; }
+            .container { padding-left: 10px; padding-right: 10px; }
         }
     </style>
 </head>
