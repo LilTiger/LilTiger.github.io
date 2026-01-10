@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Root | Jingmin An</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23050a0e%22/><text x=%2250%22 y=%2250%22 font-size=%2280%22 fill=%22%2300ff41%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>_</text></svg>">
+
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -95,10 +98,10 @@
             font-weight: bold; 
             color: #fff;
             margin-bottom: 15px;
-            display: flex; /* PC端使用Flex保持垂直居中 */
+            display: flex; 
             align-items: center;
             line-height: 1.5;
-            min-height: 1.5em; /* PC端通常一行就够，预留一行高度 */
+            min-height: 1.5em; 
         }
         .typing-container::before {
             content: '\200b'; 
@@ -187,41 +190,32 @@
             display: flex; justify-content: space-between; z-index: 100;
         }
 
-        /* === 响应式设计 (修复移动端问题) === */
+        /* === 响应式设计 (移动端修复) === */
         @media (max-width: 768px) {
             .header-section { flex-direction: column-reverse; align-items: center; text-align: center; }
             .news-item { flex-direction: column; }
             .award-item { flex-direction: column; align-items: flex-start; gap: 5px; }
 
-            /* 核心修复 1: 移动端打字机容器配置 */
+            /* 移动端打字机容器配置 */
             .typing-container { 
-                /* 改为 block/inline-block 让光标跟随文字流 */
                 display: inline-block; 
-                text-align: left; /* 保持文字左对齐，防止居中时光标乱跳 */
+                text-align: left;
                 width: 100%;
-                
-                /* 预留两行的高度 (1.8rem * 2 行 = 3.6rem) + 一点余量 防止抖动 */
-                min-height: 4.5rem; 
-                
-                /* 允许换行 */
+                /* 修复点：最小高度调整为 4.2rem */
+                min-height: 4.2rem; 
                 white-space: normal; 
                 word-wrap: break-word;
-                
-                /* 字体稍微调小一点适配手机 */
                 font-size: 1.4rem; 
             }
 
-            /* 核心修复 2: 移动端光标配置 */
+            /* 移动端光标配置 */
             .cursor {
-                /* 必须是 inline-block 才能接在文字后面 */
                 display: inline-block;
-                /* 调整光标高度适配手机字体 */
                 height: 1.4rem;
                 vertical-align: text-bottom;
                 margin-left: 2px;
             }
             
-            /* 修正伪元素在移动端的影响 */
             .typing-container::before {
                 display: none; 
             }
@@ -247,7 +241,7 @@
             
             <div class="window-bar">
                 <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-                <div class="window-title">root@an: ~/home</div>
+                <div class="window-title">root@anjm: ~/home</div>
             </div>
 
             <div class="content">
@@ -255,7 +249,7 @@
                 <section class="header-section">
                     <div style="flex: 1;">
                         <div>
-                            <span class="prompt">root@an:~#</span> 
+                            <span class="prompt">root@anjm:~#</span> 
                             <span class="cmd">./whoami</span>
                         </div>
                         <br>
@@ -307,7 +301,7 @@
 
                 <section>
                     <h2><span class="prompt">$</span>ls -l ./publications/</h2>
-
+                    
                     <div class="paper-item">
                         <span class="paper-venue">// NeurIPS 2025</span>
                         <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/117236" target="_blank" class="paper-title">Hierarchical Frequency Tagging Probe (HFTP): A Unified Approach to Investigate Syntactic Structure Representations in Large Language Models and the Human Brain</a>
@@ -330,7 +324,7 @@
                             <a href="https://pubs.rsc.org/en/content/articlelanding/2024/lc/d3lc01020a" target="_blank">[Page]</a>
                         </div>
                     </div>
-                    
+
                     <div class="paper-item">
                         <span class="paper-venue">// BMC Bioinformatics 23 (1), 467 (2023)</span>
                         <a href="https://link.springer.com/article/10.1186/s12859-022-05031-z" target="_blank" class="paper-title">Collectively encoding protein properties enriches protein language models</a>
@@ -417,7 +411,7 @@
     </div>
 
     <div class="status-bar">
-        <div>USER: root@an</div>
+        <div>USER: root@anjm</div>
         <div>ENV: PKU_LAB</div>
         <div>STATUS: ONLINE</div>
     </div>
@@ -434,12 +428,12 @@
         // 2. 动态打字机引擎
         const textElement = document.getElementById('typewriter-text');
         
-        // ⚡️ 循环播放的名言 ⚡️
+        // ⚡️ 循环播放的名言 (顺序已调整) ⚡️
         const texts = [
             "Hello, I'm Jingmin An.",
-            "Code is poetry, binaries are truth.",
             "Seeking truth in the noise.",
-            "Ad Astra Per Aspera."
+            "Ad Astra Per Aspera.",
+            "Code is poetry, binaries are truth."
         ];
 
         let textIndex = 0;
