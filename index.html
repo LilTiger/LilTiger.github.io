@@ -201,14 +201,12 @@
                 display: inline-block; 
                 text-align: left;
                 width: 100%;
-                /* 修复点：最小高度调整为 4.2rem */
                 min-height: 4.2rem; 
                 white-space: normal; 
                 word-wrap: break-word;
                 font-size: 1.4rem; 
             }
 
-            /* 移动端光标配置 */
             .cursor {
                 display: inline-block;
                 height: 1.4rem;
@@ -261,7 +259,7 @@
                         <div class="bio-text">
                             <p>
                                 > Ph.D. Candidate at <strong>Peking University (PKU)</strong> (Advisor: <a href="https://www.psy.pku.edu.cn/english/people/faculty/professor/fangfang/index.htm" target="_blank" class="link-highlight">Prof. Fang Fang</a>).<br>
-                                > Interests: <span style="color: #fff;">Computational Neuroscience</span>, <span style="color: #fff;">Cognitive Science</span>, <span style="color: #fff;">Computational Linguistics</span> & <span style="color: #fff;">Model Interpretability</span>.
+                                > Interests: <span style="color: #fff;">Computational Cognitive Neuroscience</span>, <span style="color: #fff;">Computational Linguistics</span> & <span style="color: #fff;">Model Interpretability</span>.
                             </p>
                         </div>
                         <div style="margin-top: 25px;">
@@ -278,6 +276,12 @@
                 <section>
                     <h2><span class="prompt">$</span>cat /var/log/system_updates</h2>
                     <ul class="news-list">
+                         <li class="news-item">
+                            <span class="news-date">[2026-01-06]</span>
+                            <span class="news-text">
+                                Preprint <a href="https://arxiv.org/abs/2601.06437" target="_blank" class="paper-link">Time Travel Engine</a> released on <strong>arXiv</strong>.
+                            </span>
+                        </li>
                          <li class="news-item">
                             <span class="news-date">[2025-11-14]</span>
                             <span class="news-text">Attended <strong>SfN 2025</strong> annual meeting.</span>
@@ -302,6 +306,17 @@
                 <section>
                     <h2><span class="prompt">$</span>ls -l ./publications/</h2>
                     
+                    <div class="paper-item">
+                        <span class="paper-venue">// arXiv preprint arXiv:2601.06437 (2026)</span>
+                        <a href="https://arxiv.org/abs/2601.06437" target="_blank" class="paper-title">Time Travel Engine: A Shared Latent Chronological Manifold Enables Historical Navigation in Large Language Models</a>
+                        <div class="paper-authors">
+                            <strong>Jingmin An</strong>, Wei Liu, Qian Wang, Fang Fang
+                        </div>
+                        <div class="tags">
+                            <a href="https://arxiv.org/abs/2601.06437" target="_blank">[Page]</a>
+                        </div>
+                    </div>
+
                     <div class="paper-item">
                         <span class="paper-venue">// NeurIPS 2025</span>
                         <a href="https://neurips.cc/virtual/2025/loc/san-diego/poster/117236" target="_blank" class="paper-title">Hierarchical Frequency Tagging Probe (HFTP): A Unified Approach to Investigate Syntactic Structure Representations in Large Language Models and the Human Brain</a>
@@ -371,6 +386,13 @@
                     <div class="award-grid">
                         <div class="award-item">
                             <div class="award-left">
+                                <span class="award-year">2025</span>
+                                <span class="award-title">Outstanding Work Award, PKU AI Tech Day</span>
+                            </div>
+                        </div>
+
+                        <div class="award-item">
+                            <div class="award-left">
                                 <span class="award-year">2024</span>
                                 <span class="award-title">PKU Second-Class Scholarship & Outstanding Research Award </span>
                             </div>
@@ -428,7 +450,7 @@
         // 2. 动态打字机引擎
         const textElement = document.getElementById('typewriter-text');
         
-        // ⚡️ 循环播放的名言 (顺序已调整) ⚡️
+        // ⚡️ 循环播放的名言 ⚡️
         const texts = [
             "Hello, I'm Jingmin An.",
             "Seeking truth in the noise.",
