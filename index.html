@@ -135,38 +135,185 @@
         }
 
         /* News */
-        .news-list { list-style: none; padding: 0; }
+        .news-list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            display: flow-root;
+            isolation: isolate;
+            overflow-anchor: none;
+        }
         .news-item { margin-bottom: 12px; display: flex; }
         .news-date { color: var(--accent-sec); min-width: 130px; font-weight: bold; font-size: 0.9rem; }
         .news-text { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
-        
-        /* 显式隐藏，避免原有 display: flex 覆盖 hidden 的效果 */
+
         .news-item[hidden],
-        .news-toggle[hidden] {
-            display: none;
+        .news-toggle[hidden],
+        .news-controls[hidden] { display: none; }
+
+        /* 展开时向下扫描，收起时反向扫描；仅作用于 News。 */
+        .news-list.is-animating { overflow: hidden; }
+        .news-list.is-animating::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 44px;
+            z-index: 2;
+            pointer-events: none;
+            background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.1));
+            border-bottom: 1px solid rgba(0, 240, 255, 0.65);
+            box-shadow: 0 5px 16px rgba(0, 240, 255, 0.12);
+            animation: news-scan var(--news-duration, 600ms) linear both;
         }
-        
-        .news-toggle {
+        .news-list.is-collapsing::after { animation-direction: reverse; }
+        .news-stream-row { overflow: hidden; will-change: height, opacity, transform; }
+
+        @keyframes news-scan {
+            0% { top: 0; opacity: 0; transform: translateY(-100%); }
+            15%, 75% { opacity: 1; }
+            100% { top: 100%; opacity: 0; transform: translateY(0); }
+        }
+
+        /* 终端控制栏：命令按钮 + 状态输出。 */
+        .news-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 18px;
             margin-top: 8px;
-            padding: 8px 14px;
-            border: 1px solid var(--dim);
-            border-radius: 4px;
-            background: transparent;
+            padding-top: 12px;
+            border-top: 1px dashed rgba(0, 240, 255, 0.18);
+        }
+        .news-toggle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 42px;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 10px 15px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            border-radius: 3px;
+            background: linear-gradient(120deg, rgba(0, 240, 255, 0.08), rgba(0, 255, 65, 0.025));
             color: var(--accent);
             font-family: var(--font-stack);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            line-height: 1.4;
             cursor: pointer;
-            transition: border-color 0.2s, background-color 0.2s;
+            scroll-margin-block: 24px 60px;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
-        
+        .news-toggle > span { position: relative; z-index: 1; }
+        .news-toggle::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(110deg, transparent 20%, rgba(0, 240, 255, 0.15), transparent 80%);
+            transform: translateX(-150%);
+            transition: transform 0.55s;
+        }
+        .news-toggle::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-sec);
+            box-shadow: 0 0 10px var(--accent-sec);
+            transform: scaleX(var(--news-progress, 0));
+            transform-origin: left;
+            opacity: 0;
+        }
         .news-toggle:hover {
             border-color: var(--accent);
-            background: rgba(0, 240, 255, 0.08);
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.15), inset 0 0 14px rgba(0, 240, 255, 0.04);
+            transform: translateY(-1px);
         }
-        
-        .news-toggle:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 4px;
+        .news-toggle:hover::before { transform: translateX(150%); }
+        .news-toggle:active { transform: translateY(0); }
+        .news-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+        .news-toggle-prompt { color: var(--accent-sec); font-weight: 600; }
+        .news-toggle-label { min-width: 9ch; text-align: left; }
+        .news-toggle-count {
+            min-width: 4ch;
+            padding: 2px 5px;
+            border-radius: 2px;
+            background: rgba(0, 255, 65, 0.08);
+            color: var(--accent-sec);
+            font-size: 0.7rem;
+            font-variant-numeric: tabular-nums;
+        }
+        .news-toggle-arrow {
+            width: 6px;
+            height: 6px;
+            margin-left: 2px;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            transform: translateY(-2px) rotate(45deg);
+            transition: transform 0.3s;
+        }
+        .news-toggle[aria-expanded="true"] .news-toggle-arrow {
+            transform: translateY(2px) rotate(225deg);
+        }
+        .news-terminal {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            max-width: 100%;
+            color: #8b949e;
+            font-size: 0.68rem;
+            line-height: 1.6;
+        }
+        .news-terminal-dot {
+            width: 5px;
+            height: 5px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--accent-sec);
+            opacity: 0.55;
+        }
+        .news-terminal-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .news-terminal-cursor {
+            width: 5px;
+            height: 11px;
+            flex-shrink: 0;
+            background: var(--accent-sec);
+            opacity: 0.45;
+        }
+        .news-controls.is-busy .news-toggle { cursor: progress; border-color: var(--accent); }
+        .news-controls.is-busy .news-toggle::after { opacity: 1; }
+        .news-controls.is-busy .news-terminal { color: var(--accent); }
+        .news-controls.is-busy .news-terminal-dot { opacity: 1; box-shadow: 0 0 8px var(--accent-sec); }
+        .news-controls.is-busy .news-terminal-cursor { animation: news-caret 0.7s step-end infinite; }
+        @keyframes news-caret { 50% { opacity: 0; } }
+
+        .news-sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
+        }
+        @media (max-width: 768px) {
+            .news-controls { gap: 10px; }
+            .news-terminal { flex-basis: 100%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .news-toggle, .news-toggle::before, .news-toggle-arrow { transition: none; }
+            .news-toggle:hover { transform: none; }
+            .news-list.is-animating::after { display: none; }
+            .news-controls.is-busy .news-terminal-cursor { animation: none; }
         }
 
         /* Publications & Education */
@@ -343,14 +490,27 @@
                         </li>
                     </ul>
 
-                    <button
-                        id="news-toggle"
-                        class="news-toggle"
-                        type="button"
-                        aria-expanded="false"
-                        aria-controls="news-list"
-                        hidden
-                    >See more</button>
+                    <div class="news-controls" id="news-controls" hidden>
+                        <button
+                            id="news-toggle"
+                            class="news-toggle"
+                            type="button"
+                            aria-expanded="false"
+                            aria-controls="news-list"
+                            hidden
+                        >
+                            <span class="news-toggle-prompt" aria-hidden="true">&gt;_</span>
+                            <span class="news-toggle-label" id="news-toggle-label">See more</span>
+                            <span class="news-toggle-count" id="news-toggle-count" aria-hidden="true"></span>
+                            <span class="news-toggle-arrow" aria-hidden="true"></span>
+                        </button>
+                        <span class="news-terminal" aria-hidden="true">
+                            <span class="news-terminal-dot"></span>
+                            <span class="news-terminal-text" id="news-terminal-text"></span>
+                            <span class="news-terminal-cursor"></span>
+                        </span>
+                        <span class="news-sr-only" id="news-status" role="status" aria-live="polite" aria-atomic="true"></span>
+                    </div>
                 </section>
 
                 <section>
@@ -567,43 +727,165 @@
 
                 setTimeout(type, 2500);
 
-        // 3. News：默认显示 6 条，支持展开与收起
+        // 3. News：默认 6 条，终端式展开 / 收起
         (() => {
             const VISIBLE_NEWS = 6;
             const newsList = document.getElementById('news-list');
             const newsToggle = document.getElementById('news-toggle');
+            const controls = document.getElementById('news-controls');
+            const label = document.getElementById('news-toggle-label');
+            const count = document.getElementById('news-toggle-count');
+            const terminal = document.getElementById('news-terminal-text');
+            const status = document.getElementById('news-status');
 
-            if (!newsList || !newsToggle) return;
+            if (!newsList || !newsToggle || !controls || !label || !count || !terminal || !status) return;
 
             const newsItems = Array.from(newsList.children).filter(
                 item => item.classList.contains('news-item')
             );
-            const extraCount = Math.max(newsItems.length - VISIBLE_NEWS, 0);
+            const extraItems = newsItems.slice(VISIBLE_NEWS);
+            const extraCount = extraItems.length;
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
             let expanded = false;
+            let busy = false;
+            let frameId = 0;
 
-            function updateNews() {
+            function renderState(nextExpanded) {
+                expanded = nextExpanded;
                 newsItems.forEach((item, index) => {
                     item.hidden = !expanded && index >= VISIBLE_NEWS;
                 });
-
+                controls.hidden = extraCount === 0;
                 newsToggle.hidden = extraCount === 0;
                 newsToggle.setAttribute('aria-expanded', String(expanded));
-                newsToggle.textContent = expanded
-                    ? 'See less'
-                    : `See more (+${extraCount})`;
+                newsToggle.setAttribute('aria-label', expanded
+                    ? `Show only the latest ${VISIBLE_NEWS} news items`
+                    : `Show all ${newsItems.length} news items`);
+                label.textContent = expanded ? 'See less' : 'See more';
+                count.textContent = `${expanded ? '−' : '+'}${extraCount}`;
+                const visible = expanded ? newsItems.length : Math.min(VISIBLE_NEWS, newsItems.length);
+                terminal.textContent = `// ${String(visible).padStart(2, '0')} / ${String(newsItems.length).padStart(2, '0')} records · ${expanded ? 'stream complete' : 'archive ready'}`;
             }
 
-            newsToggle.addEventListener('click', () => {
-                expanded = !expanded;
-                updateNews();
+            function announceState() {
+                status.textContent = expanded
+                    ? `All ${newsItems.length} news items shown.`
+                    : `Showing the latest ${Math.min(VISIBLE_NEWS, newsItems.length)} of ${newsItems.length} news items.`;
+            }
 
-                // 收起长列表后，确保按钮仍在视野内
-                if (!expanded) {
-                    newsToggle.scrollIntoView({ block: 'nearest' });
+            function keepButtonVisible() {
+                const rect = newsToggle.getBoundingClientRect();
+                if (rect.top < 12 || rect.bottom > window.innerHeight - 40) {
+                    newsToggle.scrollIntoView({
+                        block: 'nearest',
+                        behavior: reducedMotion.matches ? 'auto' : 'smooth'
+                    });
                 }
-            });
+            }
 
-            updateNews();
+            async function toggleNews() {
+                // 短暂锁定，防止连续点击导致多组动画叠加；保留键盘焦点。
+                if (busy || extraCount === 0) return;
+                const nextExpanded = !expanded;
+
+                if (reducedMotion.matches || typeof extraItems[0].animate !== 'function') {
+                    renderState(nextExpanded);
+                    announceState();
+                    if (!expanded) keepButtonVisible();
+                    return;
+                }
+
+                busy = true;
+                controls.classList.add('is-busy');
+                newsToggle.setAttribute('aria-disabled', 'true');
+                newsList.setAttribute('aria-busy', 'true');
+                label.textContent = nextExpanded ? 'Reading...' : 'Closing...';
+                count.textContent = '0%';
+                terminal.textContent = '';
+
+                const duration = nextExpanded ? 460 : 340;
+                // 无论记录多少，错峰等待最多 180ms，不让长列表拖慢操作。
+                const stagger = Math.min(60, 180 / Math.max(extraCount - 1, 1));
+                const totalDuration = duration + stagger * (extraCount - 1);
+                const command = nextExpanded
+                    ? 'cat /var/log/system_updates'
+                    : `head -n ${VISIBLE_NEWS} /var/log/system_updates`;
+                const animations = [];
+
+                try {
+                    // 只读取尺寸，不修改新闻中的文字、链接或 HTML。
+                    extraItems.forEach(item => { item.hidden = false; });
+                    const sizes = extraItems.map(item => ({
+                        height: `${item.getBoundingClientRect().height}px`,
+                        margin: getComputedStyle(item).marginBottom
+                    }));
+
+                    newsList.style.setProperty('--news-duration', `${totalDuration}ms`);
+                    newsList.classList.add('is-animating');
+                    newsList.classList.toggle('is-collapsing', !nextExpanded);
+                    if (nextExpanded) newsToggle.setAttribute('aria-expanded', 'true');
+
+                    extraItems.forEach((item, index) => {
+                        item.classList.add('news-stream-row');
+                        const openFrame = {
+                            height: sizes[index].height,
+                            marginBottom: sizes[index].margin,
+                            opacity: 1,
+                            transform: 'translateX(0)',
+                            filter: 'blur(0px)'
+                        };
+                        const closedFrame = {
+                            height: '0px',
+                            marginBottom: '0px',
+                            opacity: 0,
+                            transform: nextExpanded ? 'translateX(-14px)' : 'translateX(12px)',
+                            filter: 'blur(3px)'
+                        };
+                        animations.push(item.animate(
+                            nextExpanded ? [closedFrame, openFrame] : [openFrame, closedFrame],
+                            {
+                                duration,
+                                delay: (nextExpanded ? index : extraCount - 1 - index) * stagger,
+                                easing: nextExpanded ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'cubic-bezier(0.7, 0, 0.84, 0)',
+                                fill: 'both'
+                            }
+                        ));
+                    });
+
+                    // 命令逐字输出；进度条表示本地展开动画，不发起网络请求。
+                    const startedAt = performance.now();
+                    function tick(now) {
+                        const progress = Math.min((now - startedAt) / totalDuration, 1);
+                        controls.style.setProperty('--news-progress', progress.toFixed(3));
+                        count.textContent = `${Math.round(progress * 100)}%`;
+                        const letters = Math.floor(Math.min(progress / 0.75, 1) * command.length);
+                        terminal.textContent = command.slice(0, letters);
+                        if (progress < 1) frameId = requestAnimationFrame(tick);
+                    }
+                    frameId = requestAnimationFrame(tick);
+                    await Promise.allSettled(animations.map(animation => animation.finished));
+                } catch (error) {
+                    // 动画不可用时仍然完成展开 / 收起。
+                    console.warn('News animation unavailable; applying final state.', error);
+                } finally {
+                    cancelAnimationFrame(frameId);
+                    renderState(nextExpanded);
+                    animations.forEach(animation => { animation.cancel(); });
+                    extraItems.forEach(item => { item.classList.remove('news-stream-row'); });
+                    newsList.classList.remove('is-animating', 'is-collapsing');
+                    newsList.style.removeProperty('--news-duration');
+                    newsList.removeAttribute('aria-busy');
+                    controls.classList.remove('is-busy');
+                    controls.style.removeProperty('--news-progress');
+                    newsToggle.removeAttribute('aria-disabled');
+                    busy = false;
+                    announceState();
+                    if (!expanded) keepButtonVisible();
+                }
+            }
+
+            newsToggle.addEventListener('click', toggleNews);
+            renderState(false);
         })();
     </script>
 
