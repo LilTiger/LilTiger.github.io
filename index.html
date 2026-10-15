@@ -139,6 +139,35 @@
         .news-item { margin-bottom: 12px; display: flex; }
         .news-date { color: var(--accent-sec); min-width: 130px; font-weight: bold; font-size: 0.9rem; }
         .news-text { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; }
+        
+        /* 显式隐藏，避免原有 display: flex 覆盖 hidden 的效果 */
+        .news-item[hidden],
+        .news-toggle[hidden] {
+            display: none;
+        }
+        
+        .news-toggle {
+            margin-top: 8px;
+            padding: 8px 14px;
+            border: 1px solid var(--dim);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--accent);
+            font-family: var(--font-stack);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+        
+        .news-toggle:hover {
+            border-color: var(--accent);
+            background: rgba(0, 240, 255, 0.08);
+        }
+        
+        .news-toggle:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
 
         /* Publications & Education */
         .paper-item, .edu-item {
@@ -275,7 +304,7 @@
 
                 <section>
                     <h2><span class="prompt">$</span>cat /var/log/system_updates</h2>
-                    <ul class="news-list">
+                    <ul class="news-list" id="news-list">
                         <li class="news-item">
                             <span class="news-date">[2026-09-29]</span>
                             <span class="news-text">
@@ -313,6 +342,15 @@
                             <span class="news-text">Awarded <strong>PKU Second-Class Scholarship</strong> & <strong>Outstanding Research Award</strong>.</span>
                         </li>
                     </ul>
+
+                    <button
+                        id="news-toggle"
+                        class="news-toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="news-list"
+                        hidden
+                    >See more</button>
                 </section>
 
                 <section>
@@ -405,7 +443,7 @@
                         <div class="award-item">
                             <div class="award-left">
                                 <span class="award-year">2026</span>
-                                <span class="award-title">PKU Second-Class Scholarship & Outstanding Research Award</span>
+                                <span class="award-title">PKU Luo Yuehua Scholarship & Merit Student Award</span>
                             </div>
                         </div>
 
@@ -527,7 +565,46 @@
             setTimeout(type, delay);
         }
 
-        setTimeout(type, 2500);
+                setTimeout(type, 2500);
+
+        // 3. News：默认显示 6 条，支持展开与收起
+        (() => {
+            const VISIBLE_NEWS = 6;
+            const newsList = document.getElementById('news-list');
+            const newsToggle = document.getElementById('news-toggle');
+
+            if (!newsList || !newsToggle) return;
+
+            const newsItems = Array.from(newsList.children).filter(
+                item => item.classList.contains('news-item')
+            );
+            const extraCount = Math.max(newsItems.length - VISIBLE_NEWS, 0);
+            let expanded = false;
+
+            function updateNews() {
+                newsItems.forEach((item, index) => {
+                    item.hidden = !expanded && index >= VISIBLE_NEWS;
+                });
+
+                newsToggle.hidden = extraCount === 0;
+                newsToggle.setAttribute('aria-expanded', String(expanded));
+                newsToggle.textContent = expanded
+                    ? 'See less'
+                    : `See more (+${extraCount})`;
+            }
+
+            newsToggle.addEventListener('click', () => {
+                expanded = !expanded;
+                updateNews();
+
+                // 收起长列表后，确保按钮仍在视野内
+                if (!expanded) {
+                    newsToggle.scrollIntoView({ block: 'nearest' });
+                }
+            });
+
+            updateNews();
+        })();
     </script>
 
 </body>
